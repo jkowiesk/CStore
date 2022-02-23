@@ -1,5 +1,8 @@
 import React, { useState } from "react";
+import CustomButton from "../custom-button/custom-button.component";
 import FormInput from "../form-input/form-input.component";
+
+import { signInWithGoogle } from "../../firebase/firebase.utils";
 
 import "./sign-in.styless.scss";
 
@@ -34,7 +37,7 @@ export default function SignIn(params) {
           label="email"
           handleChange={handleChange}
           value={account.email}
-          reguired
+          required
         />
         <FormInput
           name="password"
@@ -42,8 +45,14 @@ export default function SignIn(params) {
           label="password"
           handleChange={handleChange}
           value={account.password}
-          reguired
+          required
         />
+        <div className="buttons">
+          <CustomButton type="submit">SIGN IN</CustomButton>
+          <CustomButton onClick={signInWithGoogle} isGoogleSignIn>
+            SIGN IN WITH GOOGLE
+          </CustomButton>
+        </div>
       </form>
     </div>
   );
