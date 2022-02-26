@@ -4,27 +4,27 @@ import { Switch, Route } from "react-router-dom";
 import ShopPage from "./pages/shop/shop.component";
 import Header from "./components/header/header.component";
 import SignInSignUp from "./pages/sign-in-sign-up/sign-in-sign-up.component";
-
 import { auth, createUserProfileDocument } from "./firebase/firebase.utils";
+import { connect } from "react-redux";
+import { Redirect } from "react-router-dom";
+import { setAccount } from "./redux/user/user.actions";
 
 import "./App.css";
 
-function App() {
-  const [user, setUser] = useState(null);
-
+function App(props) {
   useEffect(() => {
     const unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
       if (userAuth) {
         const userRef = await createUserProfileDocument(userAuth);
 
         userRef.onSnapshot((snapShot) => {
-          setUser({
+          props.setAccount({
             id: snapShot.id,
             ...snapShot.data(),
           });
         });
       } else {
-        setUser({ userAuth });
+        props.setAccount(null);
       }
     });
 
@@ -34,19 +34,32 @@ function App() {
   }, []);
 
   useEffect(() => {
-    console.log(user);
-  }, [user]);
+    console.log(props.account);
+  }, [props.account]);
 
   return (
     <div>
-      <Header user={user} />
+      <Header />
       <Switch>
         <Route exact path="/" component={Homepage} />
         <Route path="/shop" component={ShopPage} />
-        <Route path="/signin" component={SignInSignUp} />
+        <Route
+          path="/signin"
+          render={() =>
+            props.account ? <Redirect to="/" /> : <SignInSignUp />
+          }
+        />
       </Switch>
     </div>
   );
 }
 
-export default App;
+const mapStateToProps = (state) => ({
+  account: state.user.account,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  setAccount: (account) => dispatch(setAccount(account)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
