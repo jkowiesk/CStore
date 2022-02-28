@@ -33,9 +33,9 @@ function App(props) {
     };
   }, []);
 
-  useEffect(() => {
+  /*   useEffect(() => {
     console.log(props.account);
-  }, [props.account]);
+  }, [props.account]); */
 
   return (
     <div>
