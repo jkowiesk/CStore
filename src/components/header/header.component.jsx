@@ -33,7 +33,7 @@ function Header({ account, hidden }) {
         )}
         <CartIcon />
       </div>
-      {hidden && <CartDropdown />}
+      {!hidden && <CartDropdown />}
     </div>
   );
 }
