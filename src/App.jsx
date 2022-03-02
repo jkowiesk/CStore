@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Homepage from "./pages/homepage/homepage.component";
 import { Switch, Route } from "react-router-dom";
 import ShopPage from "./pages/shop/shop.component";
@@ -8,6 +8,7 @@ import { auth, createUserProfileDocument } from "./firebase/firebase.utils";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
 import { setAccount } from "./redux/user/user.actions";
+import CheckoutPage from "./pages/checkout/checkout.component";
 
 import "./App.css";
 
@@ -43,6 +44,7 @@ function App(props) {
       <Switch>
         <Route exact path="/" component={Homepage} />
         <Route path="/shop" component={ShopPage} />
+        <Route exact path="/checkout" component={CheckoutPage} />
         <Route
           path="/signin"
           render={() =>
